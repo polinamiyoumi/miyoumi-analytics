@@ -326,7 +326,64 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 </head>
 <body>
 
-<div class="header">
+<style>
+.login-screen {
+  position: fixed; inset: 0; background: var(--dark);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+}
+.login-box {
+  background: #fff; border-radius: 16px; padding: 40px 48px;
+  text-align: center; width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.login-box .logo { font-size: 11px; font-weight: 800; letter-spacing: 6px; color: var(--dark); margin-bottom: 24px; }
+.login-box h2 { font-size: 20px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+.login-box p { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+.login-input {
+  width: 100%; padding: 12px 16px; border: 2px solid var(--mid);
+  border-radius: 10px; font-size: 15px; color: var(--dark);
+  margin-bottom: 12px; transition: border-color 0.2s;
+  text-align: center; letter-spacing: 2px;
+}
+.login-input:focus { outline: none; border-color: var(--accent); }
+.login-btn {
+  width: 100%; padding: 13px; background: var(--accent); color: white;
+  border: none; border-radius: 10px; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: background 0.2s;
+}
+.login-btn:hover { background: #D06A45; }
+.login-error { font-size: 12px; color: var(--red); margin-top: 8px; display: none; }
+</style>
+
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <div class="logo">MIYOUMI</div>
+    <h2>Аналитика блогеров</h2>
+    <p>Введите пароль для входа</p>
+    <input class="login-input" type="password" id="login-input" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter') checkPassword()">
+    <button class="login-btn" onclick="checkPassword()">Войти</button>
+    <div class="login-error" id="login-error">Неверный пароль</div>
+  </div>
+</div>
+
+<script>
+function checkPassword() {
+  const val = document.getElementById('login-input').value;
+  if (val === 'ns45623a') {
+    document.getElementById('login-screen').style.display = 'none';
+    sessionStorage.setItem('miyoumi_auth', '1');
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('login-input').value = '';
+    document.getElementById('login-input').focus();
+  }
+}
+// Если уже входил в этой сессии — не показывать
+if (sessionStorage.getItem('miyoumi_auth') === '1') {
+  document.getElementById('login-screen').style.display = 'none';
+}
+</script>
   <div class="header-left">
     <div class="logo">MIYOUMI</div>
     <div class="header-title">Аналитика блогеров</div>
